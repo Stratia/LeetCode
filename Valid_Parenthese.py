@@ -16,6 +16,8 @@ class Solution: # Returns boolean
     # Parenthese must be closed
     # All parenthese must be closed
     """
+    This is a sort of 'bounce' algoritiom, not fast nor perfect but it gets the 
+    job done
     Code Logic:
     1: In first for-loop, the loops looks for a "("
     2: Once first parenthese is found, create a seperate for-loop to loop for a corresponding closing bracket
@@ -29,15 +31,27 @@ class Solution: # Returns boolean
             if index == "(":
                 cache_pair = None
                 print(f"'(' Found: {index}")
+
                 for par in s[count:]:
                     if par == ")":
                         valid_cache.append(True)
                         print("Valid Pair Found")
                         cache_pair = True
+
                 if cache_pair == None:
                     valid_cache.append(False);cache_pair = None
-            if index == ")":
-                pass
+
+            if index == ")": # Same algor
+                cache_pair = None
+                print(f"')' Found: {index}")
+                for close in s[:count]:
+                    if close == "(":
+                        valid_cache.append(True)
+                        cache_pair = True
+                if cache_pair == True:
+                    pass
+                else:
+                    valid_cache.append(False);cache_pair = None
             else:
                 print(index)
         print(f"Valid Cache: {valid_cache}")
