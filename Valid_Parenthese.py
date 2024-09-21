@@ -12,61 +12,48 @@ An input string is valid if:
 
 valid_cache = []
 
-class Solution: # Returns boolean
-    # Parenthese must be closed
-    # All parenthese must be closed
-    """
-    This is a sort of 'bounce' algoritiom, not fast nor perfect but it gets the 
-    job done
-    Code Logic:
-    1: In first for-loop, the loops looks for a "("
-    2: Once first parenthese is found, create a seperate for-loop to loop for a corresponding closing bracket
-       - This will happen for each ")" instance
-    ")"
-    """
-    
-    def isValid(self, s: str) -> bool:
-        # Todo: Now do checking for closing brackets, this is going to get messy
-        for count, index in enumerate(s):
-            if index == "(":
-                cache_pair = None
-                print(f"'(' Found: {index}")
+class Solution(object):
 
-                for par in s[count:]:
-                    if par == ")":
-                        valid_cache.append(True)
-                        print("Valid Pair Found")
-                        cache_pair = True
+    def isValid(self, s):
+        """
+        Paradign Equalization Metric Algoritiom:
+         Operating Procedures: 
+           - It will iterate through the given string, when encountering an opening bracket it will
+             store it in the stack (cache), when encountering a closing bracket, it will check the last 
+             entered value within the stack; If this value doesn't corresponding to the current closing bracket
+             it will return False. If it does, stack will be deleted. 
 
-                if cache_pair == None:
-                    valid_cache.append(False);cache_pair = None
-
-            if index == ")": # Same algor
-                cache_pair = None
-                print(f"')' Found: {index}")
-                for close in s[:count]:
-                    if close == "(":
-                        valid_cache.append(True)
-                        cache_pair = True
-                if cache_pair == True:
-                    pass
-                else:
-                    valid_cache.append(False);cache_pair = None
-            else:
-                print(index)
-        print(f"Valid Cache: {valid_cache}")
-
-        if False in valid_cache:
-            return False
-        else:
+             If stack is empty return True
+        """
+        stack = [] # Cache to store last encountered opening bracket
+        for algor in s: # Iterates through string to find brackets
+            if algor in '([{': # If detects string that is an opening bracket
+                stack.append(algor) # Will append it to stack for reference when closing bracket is found
+            else: # Closing Bracket
+                if not stack: # If stack is empty, will return False because a corresponding closing bracket doesn't exist or hasn't been encoutered
+                    return False 
+                else: # If stack is filled | Basically, if an opening bracket has been encountered
+                    # All of these check if the last encountereed opening bracket corresponds with the current closing bracket
+                    if stack[-1] == "(" and algor == ")": 
+                        stack.pop()
+                    elif stack[-1] == "[" and algor == "]":
+                        stack.pop()
+                    elif stack[-1] == "{" and algor == "}":
+                        stack.pop()
+                    else: # Returns false because last encountered opening bracket and current closing bracket don't match
+                        return False
+        # If everything is fine stack will return True, since everything correspondings, if things didn't it wouldn't
+        # Have gotten to this line of code anyways
+        if not stack:
             return True
+        else:
+            return False
+   
 
-s = "()"
-s2 = "(*FVJ$)"
-s3 = "(CH(#))F#)$(($)()$()))"
-s4 = "(]"
+s5 = "(])" # False
+
 obj = Solution()
 valid = obj.isValid
-value = valid(s3)
+value = valid(s5)
 
 print("Output: ",value)
